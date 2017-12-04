@@ -1,0 +1,92 @@
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'eclipse'
+
+version = '0.0.1'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+	}
+}
+
+repositories {
+   mavenCentral()
+}
+dependencyManagement {
+  imports {
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Dalston.SR1'
+  }
+}
+dependencies {
+	compile ('org.springframework.cloud:spring-cloud-starter-zuul')
+	compile ('org.springframework.cloud:spring-cloud-starter-eureka')
+	compile ('org.springframework.boot:spring-boot-starter-security')
+	compile ('org.springframework.cloud:spring-cloud-starter-security')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+task createFolder{
+    def configDir = new File(project.buildDir.path+"/libs", "config")
+    def keystoreDir = new File(project.buildDir.path+"/libs", "keystore")
+    def logDir = new File(project.buildDir.path+"/libs", "log")
+    def libDir = new File(project.buildDir.path+"/libs", "lib")
+
+    if(!logDir.exists()) {
+        logDir.mkdirs()
+    }
+    delete configDir
+    delete libDir
+    delete keystoreDir
+
+    libDir.mkdirs()
+    configDir.mkdirs()
+    keystoreDir.mkdirs()
+}
+
+ //copy config
+task copyConfig(type: Copy) {	
+	into project.buildDir.path+"/libs/config"
+    from "config"
+
+}
+ //copy keystore
+task copyKeystore(type: Copy) {	
+	into project.buildDir.path+"/libs/keystore"
+    from "keystore"
+}
+
+//copy dependencies
+task copyRuntimeLibs(type: Copy) {
+    into project.buildDir.path+"/libs/lib"
+    from configurations.compile
+}
+
+task bundleAll(type: Jar){
+	dependsOn 'createFolder', 'copyRuntimeLibs', 'copyConfig', 'copyKeystore' 
+
+  	manifest { 
+  		def manifestClasspath = configurations.compile.collect { "lib/" + it.getName() }.join(' ') 
+		attributes 'Implementation-Title': 'edge-server', 
+                   'Implementation-Version': version,
+    	           'Main-Class': 'com.innoviti.gateway.server.GatewayServer',
+    			   'Class-Path': manifestClasspath
+  	}  
+  	baseName=project.name
+  from { (configurations.compile - configurations.compile).collect { it.isDirectory() ? it : zipTree(it) } }
+  with jar
+     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' 
+} 
+
+task zip(type: Zip){
+	dependsOn 'bundleAll'
+	 from 'build/libs'
+}
+
