@@ -10,11 +10,6 @@
 .settings/ 
 
 
-
-
-
-
-
 #Gradle 
 .gradletasknamecache 
 .gradle/ 
