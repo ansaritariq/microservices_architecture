@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.gateway")
 public class GatewayServer {
   public static void main(String[] args) {
-    System.setProperty("spring.config.name", "gateway-server");
     SpringApplication.run(GatewayServer.class, args);
   }
 }

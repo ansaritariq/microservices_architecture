@@ -9,7 +9,6 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 public class ServiceRegistrationServer {
 
   public static void main(String[] args) {
-    System.setProperty("spring.config.name", "service-registrar");
     SpringApplication.run(ServiceRegistrationServer.class, args);
   }
 }
