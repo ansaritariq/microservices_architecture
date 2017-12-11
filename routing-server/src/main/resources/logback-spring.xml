@@ -29,7 +29,7 @@
 	</root>
 
 	<logger name="org.hibernate" level="INFO" />
-	<logger name="com.innoviti" level="DEBUG" />
+	<logger name="com.gateway" level="DEBUG" />
 	<logger name="org.springframework.web" level="DEBUG" />
 	<logger name="org.springframework.security" level="DEBUG" />
 </configuration>
