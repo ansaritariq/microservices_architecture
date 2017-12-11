@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/basic.xml"/>
+	<property name="LOG_FILE" value="log/order-service" />
+	<property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%t] --- %-40.40logger{39} : %m%n" />
+	<!-- <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" /> -->
+	<!-- console appender -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    	<encoder>
+        	<pattern>${FILE_LOG_PATTERN}</pattern>
+   		</encoder>
+	</appender>
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_FILE}.log</file>
+		<encoder>
+        	<pattern>${FILE_LOG_PATTERN}</pattern>
+    	</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+ -
+	<root level="INFO">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE"/>
+	</root>
+
+	<logger name="org.hibernate" level="INFO" />
+	<logger name="com.order" level="DEBUG" />
+	<logger name="org.springframework.web" level="DEBUG" />
+	<logger name="org.springframework.security" level="DEBUG" />
+</configuration>
