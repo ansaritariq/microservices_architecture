@@ -23,7 +23,7 @@ public class OauthTokenEnhancer implements TokenEnhancer {
   public OAuth2AccessToken enhance(OAuth2AccessToken accessToken,
       OAuth2Authentication authentication) {
     String userName = authentication.getName();
-    Users user = userService.findByUsernameOrMobile(userName);
+    Users user = userService.findByUsername(userName);
     final Map<String, Object> additionalInfo = new HashMap<>();
     additionalInfo.put("name", user.getFirstName());
     ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);

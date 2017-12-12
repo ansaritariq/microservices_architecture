@@ -25,7 +25,7 @@ public class UserController {
   
   @GetMapping
   public ResponseEntity<Users> getUserByUsername(Principal principal){
-    Users user = userService.findByUsernameOrMobile(principal.getName());
+    Users user = userService.findByUsername(principal.getName());
     return ResponseEntity.<Users>ok(user);    
   }
 }

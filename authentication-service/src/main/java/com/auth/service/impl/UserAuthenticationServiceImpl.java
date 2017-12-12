@@ -32,7 +32,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Users user = userService.findByUsernameOrMobile(username);
+    Users user = userService.findByUsername(username);
     if (user == null) {
       throw new UsernameNotFoundException("User not found");
     }
