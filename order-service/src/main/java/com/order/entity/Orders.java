@@ -23,7 +23,7 @@ public class Orders implements Serializable{
   private int id;
   
   @Column(name= "amount", nullable =false)
-  private double mount;
+  private double amount;
   
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "date", nullable = false)
@@ -43,12 +43,12 @@ public class Orders implements Serializable{
     this.id = id;
   }
 
-  public double getMount() {
-    return mount;
+  public double getAmount() {
+    return amount;
   }
 
-  public void setMount(double mount) {
-    this.mount = mount;
+  public void setAmount(double amount) {
+    this.amount = amount;
   }
 
   public Date getDate() {
